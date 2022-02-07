@@ -1,1 +1,1 @@
-# aitutor_web_interface
+# aitutor-web-interface
