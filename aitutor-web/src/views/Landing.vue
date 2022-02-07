@@ -1,7 +1,8 @@
 <template>
   <div class="landing">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <img alt="Vue logo" src="../assets/agilesoda_logo.png">
+    <router-link to="/main">login</router-link>
+    <router-link to="/sign-up">sign up</router-link>
   </div>
 </template>
 
