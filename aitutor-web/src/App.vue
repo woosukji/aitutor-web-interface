@@ -1,12 +1,27 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <navigation v-if="showNavigation" />
+    <router-view />
   </div>
 </template>
+
+<script>
+// @ is an alias to /src
+import Navigation from "@/components/Navigation.vue";
+
+export default {
+  name: "App",
+  components: { Navigation },
+  data() {
+    return {};
+  },
+  computed: {
+    showNavigation() {
+      return !["/", "/sign-up"].includes(this.$route.path);
+    },
+  },
+};
+</script>
 
 <style lang="scss">
 #app {

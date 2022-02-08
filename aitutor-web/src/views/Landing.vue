@@ -1,19 +1,16 @@
 <template>
   <div class="landing">
-    <img alt="Vue logo" src="../assets/agilesoda_logo.png">
-    <router-link to="/main">login</router-link>
-    <router-link to="/sign-up">sign up</router-link>
+    <img alt="Vue logo" src="../assets/agilesoda_logo.png" />
+    <div>Welcome to Agilesoda AI Tutor service!</div>
+    <div class="register">
+      <router-link to="/main">login</router-link>
+      <router-link to="/sign-up">sign up</router-link>
+    </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue';
-
 export default {
-  name: 'Landing',
-  components: {
-    HelloWorld,
-  },
+  name: "Landing",
 };
 </script>
