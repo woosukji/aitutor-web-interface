@@ -1,8 +1,10 @@
 <template>
-  <div id="app">
+  <v-app>
     <navigation v-if="showNavigation" />
-    <router-view />
-  </div>
+    <v-content>
+      <router-view />
+    </v-content>
+  </v-app>
 </template>
 
 <script>
