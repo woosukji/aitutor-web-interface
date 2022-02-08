@@ -10,6 +10,7 @@
     </span>
     <span class="profile">
       <router-link to="/change-info">profile</router-link>
+      <router-link to="/">logout</router-link>
     </span>
   </div>
 </template>
