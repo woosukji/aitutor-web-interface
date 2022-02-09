@@ -2,10 +2,10 @@
   <div class="n-choice d-flex flex-column">
     <div class="options d-flex flex-column">
       <v-btn
-        v-for="(option, i) in optionList"
-        :key="i"
-        :disabled="choice === i"
-        @click="choice = i"
+        v-for="(option, idx) in optionList"
+        :key="idx"
+        :disabled="choiceIdx === idx"
+        @click="choiceIdx = idx"
         color="accent"
         class="mb-2"
         >{{ option }}</v-btn
@@ -14,7 +14,7 @@
     <v-spacer></v-spacer>
     <v-btn
       class="chosen mt-4"
-      :disabled="choice === undefined"
+      :disabled="choiceIdx === undefined"
       @click="onChosen"
       color="primary"
       >done!</v-btn
@@ -30,13 +30,17 @@ export default {
   },
   data() {
     return {
-      choice: undefined,
+      choiceIdx: undefined,
     };
   },
-  computed: {},
+  computed: {
+    choiceNum() {
+      return this.choiceIdx + 1;
+    },
+  },
   methods: {
     onChosen() {
-      this.$emit("chosen", this.choice);
+      this.$emit("chosen", this.choiceNum);
     },
   },
 };

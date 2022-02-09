@@ -58,7 +58,7 @@ export default {
     return {
       mode: "select-chapter",
       loading: false,
-      chapterList: ["hi", "chapter", "list"],
+      chapterList: ["소단원1", "소단원2", "소단원3"],
       nSolved: 0,
       nProblems: 3,
       problems: [
@@ -66,16 +66,19 @@ export default {
           imgSrc: "https://cdn.vuetifyjs.com/images/cards/docks.jpg",
           questionText: "1. 다음 그림에서 x의 값은?",
           optionList: ["1", "2", "4", "8", "없다없다없다없다없다없다없다없다"],
+          answer: 1,
         },
         {
           imgSrc: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
           questionText: "2. 다음 그림에서 y의 값은?",
           optionList: ["88", "44", "22", "11", "없다"],
+          answer: 2,
         },
         {
           imgSrc: "https://cdn.vuetifyjs.com/images/cards/docks.jpg",
           questionText: "3. 다음 그림에서 z의 값은?",
           optionList: ["121", "2324", "43213", "11230", "없다"],
+          answer: 5,
         },
       ],
       currentProblem: {},
@@ -94,27 +97,29 @@ export default {
     loadProblems() {
       this.currentProblem = { ...this.problems[0] };
     },
-    async handleProblemSolved(e) {
-      const choice = e + 1;
+    async handleProblemSolved(choice) {
       this.nSolved += 1;
 
       this.choices.push(choice);
 
       if (this.nSolved < this.problems.length) {
-        this.currentProblem = this.problems[this.nSolved];
+        this.currentProblem = { ...this.problems[this.nSolved] };
       } else {
         await this.loadResult();
-        this.loading = false;
         this.mode = "show-result";
       }
     },
     loadResult() {
       this.loading = true;
-      return new Promise((resolve) => setTimeout(this.resolver, 1000, resolve));
+      return this.loadingResolver(1000);
     },
-    resolver(resolve) {
-      this.loading = true;
-      resolve();
+    loadingResolver(time = 500) {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          this.loading = false;
+          resolve();
+        }, time);
+      });
     },
   },
 };

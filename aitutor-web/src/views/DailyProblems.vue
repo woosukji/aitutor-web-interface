@@ -75,36 +75,39 @@ export default {
   },
   computed: {},
   methods: {
-    handleChapterSelected(e) {
+    async handleChapterSelected(e) {
       console.log(`selection recieved: ${e}`);
 
-      this.loadProblems();
+      await this.loadProblems();
 
       this.mode = "solve-problems";
     },
     loadProblems() {
+      this.loading = true;
       this.currentProblem = { ...this.problems[0] };
+      return this.loadingResolver();
     },
-    async handleProblemSolved(e) {
-      const choice = e + 1;
+    async handleProblemSolved(choice) {
       this.nSolved += 1;
-
       this.choices.push(choice);
 
       await this.loadAnswer();
-      this.loading = false;
       this.mode = "show-answer";
     },
     loadAnswer() {
       this.loading = true;
-      return new Promise((resolve) => setTimeout(this.resolver, 500, resolve));
+      return this.loadingResolver();
     },
     handleNextProblem() {
       this.mode = "solve-problems";
     },
-    resolver(resolve) {
-      this.loading = true;
-      resolve();
+    loadingResolver(time = 500) {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          this.loading = false;
+          resolve();
+        }, time);
+      });
     },
   },
 };
