@@ -15,7 +15,7 @@
 
 <script>
 export default {
-  name: "CardHorizontal",
+  name: "CardProblem",
   props: {
     cardImageSrc: String,
   },

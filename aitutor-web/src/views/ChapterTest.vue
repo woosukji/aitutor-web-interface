@@ -28,11 +28,11 @@
 
       <v-row align="center" class="flex-column flex-sm-row">
         <v-col class="d-flex justify-center justify-sm-start">
-          <card-horizontal :card-image-src="currentProblem.imgSrc">
+          <card-problem :card-image-src="currentProblem.imgSrc">
             <div class="problem-text">
               {{ currentProblem.questionText }}
             </div>
-          </card-horizontal>
+          </card-problem>
         </v-col>
 
         <v-col>
@@ -57,12 +57,12 @@
 
 <script>
 import ChapterSelection from "@/components/ChapterSelection.vue";
-import CardHorizontal from "@/components/CardHorizontal.vue";
+import CardProblem from "@/components/CardProblem.vue";
 import NChoice from "@/components/NChoice.vue";
 
 export default {
   name: "ChapterTest",
-  components: { ChapterSelection, CardHorizontal, NChoice },
+  components: { ChapterSelection, CardProblem, NChoice },
   data() {
     return {
       mode: "select-chapter",
