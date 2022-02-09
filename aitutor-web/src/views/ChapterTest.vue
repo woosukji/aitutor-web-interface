@@ -9,7 +9,7 @@
     ></chapter-selection>
 
     <v-container
-      v-else-if="mode == 'solve-problems'"
+      v-else-if="mode === 'solve-problems'"
       class="solve-problems pa-8"
     >
       <v-row>
@@ -26,26 +26,18 @@
         </v-col>
       </v-row>
 
-      <v-row align="center" class="flex-column flex-sm-row">
-        <v-col class="d-flex justify-center justify-sm-start">
-          <card-problem :card-image-src="currentProblem.imgSrc">
-            <div class="problem-text">
-              {{ currentProblem.questionText }}
-            </div>
-          </card-problem>
-        </v-col>
-
+      <v-row>
         <v-col>
-          <n-choice
-            :option-list="currentProblem.optionList"
+          <problem
+            :current-problem="currentProblem"
             @chosen="handleProblemSolved"
             :key="nSolved"
-          ></n-choice>
+          ></problem>
         </v-col>
       </v-row>
     </v-container>
 
-    <v-container v-else-if="mode == 'show-result'">
+    <v-container v-else-if="mode === 'show-result'">
       {{ choices }}
     </v-container>
 
@@ -57,12 +49,11 @@
 
 <script>
 import ChapterSelection from "@/components/ChapterSelection.vue";
-import CardProblem from "@/components/CardProblem.vue";
-import NChoice from "@/components/NChoice.vue";
+import Problem from "@/components/Problem.vue";
 
 export default {
   name: "ChapterTest",
-  components: { ChapterSelection, CardProblem, NChoice },
+  components: { ChapterSelection, Problem },
   data() {
     return {
       mode: "select-chapter",
@@ -101,7 +92,7 @@ export default {
       this.mode = "solve-problems";
     },
     loadProblems() {
-      this.currentProblem = this.problems[this.nSolved];
+      this.currentProblem = { ...this.problems[0] };
     },
     async handleProblemSolved(e) {
       const choice = e + 1;
