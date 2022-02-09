@@ -17,14 +17,11 @@
         <div>오늘의 추천 문제를 풀고</div>
         <div>당신의 수학 실력을 향상시키세요.</div>
       </card-vertical>
-      <!--       <router-link to="/daily-problems">Daily Problems</router-link>
-      <router-link to="/chapter-test">Chapter test</router-link> -->
     </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
 import CardVertical from "@/components/CardVertical.vue";
 
 export default {

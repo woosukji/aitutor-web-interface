@@ -33,7 +33,6 @@ export default {
   computed: {},
   methods: {
     onSelected() {
-      console.log("selection done!");
       this.$emit("selected", this.selection);
     },
   },
