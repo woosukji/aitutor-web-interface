@@ -10,7 +10,7 @@
 
     <v-container
       v-else-if="mode == 'solve-problems'"
-      class="solve-problems grey lighten-5"
+      class="solve-problems pa-8"
     >
       <v-row>
         <v-col>
@@ -26,14 +26,14 @@
         </v-col>
       </v-row>
 
-      <v-row align="center">
-        <v-col>
+      <v-row align="center" class="flex-column flex-sm-row">
+        <v-col class="d-flex justify-center justify-sm-start">
           <card-horizontal :card-image-src="currentProblem.imgSrc">
-            <div class="problem-text">{{ currentProblem.questionText }}</div>
+            <div class="problem-text">
+              {{ currentProblem.questionText }}
+            </div>
           </card-horizontal>
         </v-col>
-
-        <v-spacer></v-spacer>
 
         <v-col>
           <n-choice
@@ -74,17 +74,17 @@ export default {
         {
           imgSrc: "https://cdn.vuetifyjs.com/images/cards/docks.jpg",
           questionText: "1. 다음 그림에서 x의 값은?",
-          optionList: ["1", "2", "4", "8", "없다"],
+          optionList: ["1", "2", "4", "8", "없다없다없다없다없다없다없다없다"],
         },
         {
           imgSrc: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
           questionText: "2. 다음 그림에서 y의 값은?",
-          optionList: ["1", "2", "4", "9", "없다"],
+          optionList: ["88", "44", "22", "11", "없다"],
         },
         {
           imgSrc: "https://cdn.vuetifyjs.com/images/cards/docks.jpg",
           questionText: "3. 다음 그림에서 z의 값은?",
-          optionList: ["1", "2", "4", "10", "없다"],
+          optionList: ["121", "2324", "43213", "11230", "없다"],
         },
       ],
       currentProblem: {},
@@ -132,5 +132,9 @@ export default {
 <style scoped lang="scss">
 .chapter-test {
   height: 100%;
+}
+
+.solve-problems {
+  max-width: 800px;
 }
 </style>
