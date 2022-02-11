@@ -68,20 +68,17 @@ export default new Vuex.Store({
     },
 
     async loadChapterTestProblems(_, chapter) {
-      console.log(chapter);
       const problemsQuery = query(
         problemsCollection,
         where("학년", "==", "중등 3-1"),
         where("교재 이름", "==", "개념완성 중3_1_강의용 부록(강의용)"),
         where("소단원", "==", chapter),
-        where("confidence_rate", ">=", 0.7)
+        where("confidence_rate", ">=", 0.6)
       );
 
       const chapterTestProblems = [];
       const querySnapshot = await getDocs(problemsQuery);
-      console.log(querySnapshot);
       querySnapshot.forEach((document) => {
-        console.log(document.data());
         chapterTestProblems.push(document.data());
       });
       return chapterTestProblems;

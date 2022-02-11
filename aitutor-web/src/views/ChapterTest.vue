@@ -62,27 +62,7 @@ export default {
       loading: false,
       nSolved: 0,
       nProblems: 3,
-      problems: [
-        {
-          imgSrc: "https://cdn.vuetifyjs.com/images/cards/docks.jpg",
-          questionText:
-            "+ 확인 1* 다음은 오른쪽 그림에서 $\\overline{\\mathrm{PA}}$, $\\overline{\\mathrm{PB}}$ 가 원 $\\mathrm{O}$ 의 접선이고 두 점 $\\mathrm{A}, \\mathrm{B}$ 가 접점일 때, $\\overline{\\mathrm{PB}}$ 의 길이를 구하는 과정이다. 간ㅆㅂ배에 알맞은 것을 구하여 가",
-          optionList: ["1", "2", "4", "8", "없다없다없다없다없다없다없다없다"],
-          answer: 1,
-        },
-        {
-          imgSrc: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-          questionText: "2. 다음 그림에서 y의 값은?",
-          optionList: ["88", "44", "22", "11", "없다"],
-          answer: 2,
-        },
-        {
-          imgSrc: "https://cdn.vuetifyjs.com/images/cards/docks.jpg",
-          questionText: "3. 다음 그림에서 z의 값은?",
-          optionList: ["121", "2324", "43213", "11230", "없다"],
-          answer: 5,
-        },
-      ],
+      problems: [],
       currentProblem: {},
       choices: [],
     };
@@ -90,21 +70,12 @@ export default {
   computed: {},
   methods: {
     async handleChapterSelected(chapter) {
-      console.log(`selection recieved: "${chapter}"`);
+      this.loading = true;
 
-      this.loadProblems(chapter);
-
-      this.mode = "solve-problems";
-    },
-    async loadProblems(chapter) {
       const chapterProblems = await this.$store.dispatch(
         "loadChapterTestProblems",
-
-        // below line has a problem whith ESLint: comma-dangle
-        // rule turned off temporarily, but needs check
         chapter
       );
-      console.log(chapterProblems);
 
       this.problems = chapterProblems.map((data) => {
         const {
@@ -119,6 +90,10 @@ export default {
       this.nProblems = this.problems.length;
 
       this.currentProblem = { ...this.problems[0] };
+
+      this.mode = "solve-problems";
+
+      this.loading = false;
     },
     async handleProblemSolved(choice) {
       this.nSolved += 1;
