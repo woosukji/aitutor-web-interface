@@ -1,19 +1,21 @@
 <template>
   <v-card max-width="300" elevation="0">
+    <v-card-text class="font-weight-bold pl-0 text-left">
+      <div v-katex:auto="katexConfig" :key="cardText">{{ cardText }}</div>
+    </v-card-text>
+
     <v-img
       class="white--text align-end rounded-lg"
       height="200px"
       :src="cardImageSrc"
     >
     </v-img>
-
-    <v-card-text text-center class="font-weight-bold">
-      <div>{{ cardText }}</div>
-    </v-card-text>
   </v-card>
 </template>
 
 <script>
+import katexConfig from "@/plugins/vue-katex";
+
 export default {
   name: "CardProblem",
   props: {
@@ -21,7 +23,9 @@ export default {
     cardText: String,
   },
   data() {
-    return {};
+    return {
+      katexConfig,
+    };
   },
   computed: {},
 };

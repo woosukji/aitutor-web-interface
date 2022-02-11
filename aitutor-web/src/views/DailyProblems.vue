@@ -52,7 +52,8 @@ export default {
       problems: [
         {
           imgSrc: "https://cdn.vuetifyjs.com/images/cards/docks.jpg",
-          questionText: "1. 다음 그림에서 x의 값은?",
+          questionText:
+            "+ 확인 1* 다음은 오른쪽 그림에서 $\\overline{\\mathrm{PA}}$, $\\overline{\\mathrm{PB}}$ 가 원 $\\mathrm{O}$ 의 접선이고 두 점 $\\mathrm{A}, \\mathrm{B}$ 가 접점일 때, $\\overline{\\mathrm{PB}}$ 의 길이를 구하는 과정이다. 간ㅆㅂ배에 알맞은 것을 구하여 가",
           optionList: ["1", "2", "4", "8", "없다없다없다없다없다없다없다없다"],
           answer: 1,
         },
