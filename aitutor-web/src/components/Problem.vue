@@ -2,10 +2,10 @@
   <v-container class="problem">
     <v-row align="center" class="flex-column flex-sm-row">
       <v-col class="d-flex justify-center justify-sm-start">
-        <card-problem :card-image-src="currentProblem.imgSrc">
-          <div class="problem-text">
-            {{ currentProblem.questionText }}
-          </div>
+        <card-problem
+          :card-image-src="currentProblem.imgSrc"
+          :card-text="currentProblem.questionText"
+        >
         </card-problem>
       </v-col>
 

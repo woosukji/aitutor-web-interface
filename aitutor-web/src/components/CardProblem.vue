@@ -8,7 +8,7 @@
     </v-img>
 
     <v-card-text text-center class="font-weight-bold">
-      <slot> </slot>
+      <div>{{ cardText }}</div>
     </v-card-text>
   </v-card>
 </template>
@@ -18,6 +18,7 @@ export default {
   name: "CardProblem",
   props: {
     cardImageSrc: String,
+    cardText: String,
   },
   data() {
     return {};
