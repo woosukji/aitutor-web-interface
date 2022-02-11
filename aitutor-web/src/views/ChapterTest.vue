@@ -50,15 +50,16 @@
 <script>
 import ChapterSelection from "@/components/ChapterSelection.vue";
 import Problem from "@/components/Problem.vue";
+import { chapterList } from "@/util/DemoHelper";
 
 export default {
   name: "ChapterTest",
   components: { ChapterSelection, Problem },
   data() {
     return {
+      chapterList,
       mode: "select-chapter",
       loading: false,
-      chapterList: ["소단원1", "소단원2", "소단원3"],
       nSolved: 0,
       nProblems: 3,
       problems: [
@@ -88,14 +89,35 @@ export default {
   },
   computed: {},
   methods: {
-    handleChapterSelected(e) {
-      console.log(`selection recieved: ${e}`);
+    async handleChapterSelected(chapter) {
+      console.log(`selection recieved: "${chapter}"`);
 
-      this.loadProblems();
+      this.loadProblems(chapter);
 
       this.mode = "solve-problems";
     },
-    loadProblems() {
+    async loadProblems(chapter) {
+      const chapterProblems = await this.$store.dispatch(
+        "loadChapterTestProblems",
+
+        // below line has a problem whith ESLint: comma-dangle
+        // rule turned off temporarily, but needs check
+        chapter
+      );
+      console.log(chapterProblems);
+
+      this.problems = chapterProblems.map((data) => {
+        const {
+          파일명: imgSrc,
+          text: questionText,
+          optionList = ["88", "44", "22", "11", "없다"],
+          answer = 1,
+        } = data;
+        return { imgSrc, questionText, optionList, answer };
+      });
+
+      this.nProblems = this.problems.length;
+
       this.currentProblem = { ...this.problems[0] };
     },
     async handleProblemSolved(choice) {

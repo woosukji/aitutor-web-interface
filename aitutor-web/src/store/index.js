@@ -1,8 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
-import { auth, usersCollection } from "../plugins/firebase";
+import { doc, getDoc, getDocs, query, where } from "firebase/firestore";
+import { auth, usersCollection, problemsCollection } from "../plugins/firebase";
 import router from "../router/index";
 
 Vue.use(Vuex);
@@ -65,6 +65,26 @@ export default new Vuex.Store({
 
       // redirect to login view
       router.push("/login");
+    },
+
+    async loadChapterTestProblems(_, chapter) {
+      console.log(chapter);
+      const problemsQuery = query(
+        problemsCollection,
+        where("학년", "==", "중등 3-1"),
+        where("교재 이름", "==", "개념완성 중3_1_강의용 부록(강의용)"),
+        where("소단원", "==", chapter),
+        where("confidence_rate", ">=", 0.7)
+      );
+
+      const chapterTestProblems = [];
+      const querySnapshot = await getDocs(problemsQuery);
+      console.log(querySnapshot);
+      querySnapshot.forEach((document) => {
+        console.log(document.data());
+        chapterTestProblems.push(document.data());
+      });
+      return chapterTestProblems;
     },
   },
   modules: {},

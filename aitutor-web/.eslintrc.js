@@ -13,5 +13,6 @@ module.exports = {
     "linebreak-style": ["error", process.platform === "win32" ? "windows" : "unix"],
     quotes: ["off", "single"],
     "object-curly-newline": "off",
+    "comma-dangle": "off",
   },
 };
