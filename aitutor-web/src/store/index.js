@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { doc, getDoc, getDocs, query, where } from "firebase/firestore";
+import { doc, getDoc, getDocs, limit, orderBy, query, where } from "firebase/firestore";
 import { auth, usersCollection, problemsCollection } from "../plugins/firebase";
 import router from "../router/index";
 
@@ -71,9 +71,9 @@ export default new Vuex.Store({
       const problemsQuery = query(
         problemsCollection,
         where("학년", "==", "중등 3-1"),
-        where("교재 이름", "==", "개념완성 중3_1_강의용 부록(강의용)"),
         where("소단원", "==", chapter),
-        where("confidence_rate", ">=", 0.6)
+        orderBy("confidence_rate", "desc"),
+        limit(15)
       );
 
       const chapterTestProblems = [];
