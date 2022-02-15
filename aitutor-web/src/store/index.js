@@ -1,8 +1,18 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { doc, getDoc, getDocs, limit, orderBy, query, where } from "firebase/firestore";
-import { auth, usersCollection, problemsCollection } from "../plugins/firebase";
+import {
+  addDoc,
+  doc,
+  getDoc,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  where,
+  serverTimestamp,
+} from "firebase/firestore";
+import { auth, usersCollection, problemsCollection, logsCollection } from "../plugins/firebase";
 import router from "../router/index";
 
 Vue.use(Vuex);
@@ -47,7 +57,7 @@ export default new Vuex.Store({
       console.log(userProfile.exists());
 
       // set user profile in state
-      commit("setUserProfile", userProfile.data());
+      commit("setUserProfile", { uid: userProfile.id, ...userProfile.data() });
 
       console.log(this.state.userProfile);
 
@@ -79,9 +89,20 @@ export default new Vuex.Store({
       const chapterTestProblems = [];
       const querySnapshot = await getDocs(problemsQuery);
       querySnapshot.forEach((document) => {
-        chapterTestProblems.push(document.data());
+        chapterTestProblems.push({ uid: document.id, ...document.data() });
       });
       return chapterTestProblems;
+    },
+    async recordProblemSolveLog({ state }, data) {
+      const { problemUid, studentChoice, isCorrect, elapsedTime } = data;
+      await addDoc(logsCollection, {
+        submitTime: serverTimestamp(),
+        userUid: state.userProfile.uid,
+        problemUid,
+        studentChoice,
+        isCorrect,
+        elapsedTime,
+      });
     },
   },
   modules: {},

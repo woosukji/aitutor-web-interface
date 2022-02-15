@@ -38,7 +38,8 @@
     </v-container>
 
     <v-container v-else-if="mode === 'show-result'">
-      {{ choices }}
+      <div>Your Choice: {{ choices }}</div>
+      <div>채점 결과: {{ results }}</div>
     </v-container>
 
     <v-overlay :value="loading">
@@ -65,6 +66,7 @@ export default {
       problems: [],
       currentProblem: {},
       choices: [],
+      results: [],
     };
   },
   computed: {},
@@ -107,7 +109,7 @@ export default {
 
       this.problems = chapterProblems
         .map((data) => {
-          const { 파일명: imgSrc, text: questionText, answer = 1 } = data;
+          const { uid, 파일명: imgSrc, text: questionText, answer = 1 } = data;
 
           const {
             isValid,
@@ -116,6 +118,7 @@ export default {
           } = this.getOptionListFromText(questionText);
 
           return {
+            uid,
             imgSrc,
             questionText: questionTextFiltered,
             optionList,
@@ -133,13 +136,23 @@ export default {
 
       this.loading = false;
     },
-    async handleProblemSolved(choice) {
+    async handleProblemSolved(studentChoice) {
+      this.choices.push(studentChoice);
+
+      const isCorrect = studentChoice === this.currentProblem.answer;
+      this.results.push(isCorrect);
+
       this.nSolved += 1;
-
-      this.choices.push(choice);
-
       if (this.nSolved < this.problems.length) {
         this.currentProblem = { ...this.problems[this.nSolved] };
+
+        const log = {
+          problemUid: this.currentProblem.uid,
+          studentChoice,
+          isCorrect,
+          elapsedTime: 100,
+        };
+        this.$store.dispatch("recordProblemSolveLog", log);
       } else {
         await this.loadResult();
         this.mode = "show-result";
