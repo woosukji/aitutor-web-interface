@@ -8,8 +8,9 @@
         @click="choiceIdx = idx"
         color="accent"
         class="mb-2"
-        >{{ option }}</v-btn
       >
+        <div v-katex:auto="katexConfig">{{ option }}</div>
+      </v-btn>
     </div>
     <v-spacer></v-spacer>
     <v-btn
@@ -23,6 +24,8 @@
 </template>
 
 <script>
+import katexConfig from "@/plugins/vue-katex";
+
 export default {
   name: "NChoice",
   props: {
@@ -30,6 +33,7 @@ export default {
   },
   data() {
     return {
+      katexConfig,
       choiceIdx: undefined,
     };
   },

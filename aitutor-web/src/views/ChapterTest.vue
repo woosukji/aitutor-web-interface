@@ -69,6 +69,34 @@ export default {
   },
   computed: {},
   methods: {
+    getOptionListFromText(questionText) {
+      const optionPos = [];
+      for (let optionNum = 1; optionNum < 6; optionNum += 1) {
+        optionPos.push(questionText.lastIndexOf(`(${optionNum})`));
+      }
+      const optionPosSorted = [...optionPos].sort((a, b) => a - b);
+
+      const isValid =
+        optionPos.length > 0 &&
+        optionPos.every((ele) => ele > 0) &&
+        JSON.stringify(optionPos) === JSON.stringify(optionPosSorted);
+
+      if (isValid) {
+        const optionList = optionPos.map((ele, idx, arr) => {
+          return questionText.slice(ele + 3, arr[idx + 1]).trim();
+        });
+
+        let questionTextFiltered = questionText.slice(0, optionPos[0]).trim();
+
+        const firstWord = questionTextFiltered.split(/\s+/)[0];
+        if (!Number.isNaN(firstWord - parseFloat(firstWord))) {
+          questionTextFiltered = questionTextFiltered.slice(firstWord.length);
+        }
+
+        return { isValid, questionTextFiltered, optionList };
+      }
+      return { isValid };
+    },
     async handleChapterSelected(chapter) {
       this.loading = true;
 
@@ -77,15 +105,25 @@ export default {
         chapter
       );
 
-      this.problems = chapterProblems.map((data) => {
-        const {
-          파일명: imgSrc,
-          text: questionText,
-          optionList = ["88", "44", "22", "11", "없다"],
-          answer = 1,
-        } = data;
-        return { imgSrc, questionText, optionList, answer };
-      });
+      this.problems = chapterProblems
+        .map((data) => {
+          const { 파일명: imgSrc, text: questionText, answer = 1 } = data;
+
+          const {
+            isValid,
+            questionTextFiltered = "",
+            optionList = [],
+          } = this.getOptionListFromText(questionText);
+
+          return {
+            imgSrc,
+            questionText: questionTextFiltered,
+            optionList,
+            answer,
+            isValid,
+          };
+        })
+        .filter((data) => data.isValid);
 
       this.nProblems = this.problems.length;
 

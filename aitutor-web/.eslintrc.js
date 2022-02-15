@@ -14,5 +14,7 @@ module.exports = {
     quotes: ["off", "single"],
     "object-curly-newline": "off",
     "comma-dangle": "off",
+    "operator-linebreak": "off",
+    "arrow-body-style": "off",
   },
 };
