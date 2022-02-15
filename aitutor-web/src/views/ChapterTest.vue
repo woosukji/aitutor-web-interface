@@ -51,14 +51,14 @@
 <script>
 import ChapterSelection from "@/components/ChapterSelection.vue";
 import Problem from "@/components/Problem.vue";
-import { chapterList } from "@/util/DemoHelper";
+import { chapterLists } from "@/util/DemoHelper";
 
 export default {
   name: "ChapterTest",
   components: { ChapterSelection, Problem },
   data() {
     return {
-      chapterList,
+      chapterList: chapterLists["중등 3-2"],
       mode: "select-chapter",
       loading: false,
       nSolved: 0,

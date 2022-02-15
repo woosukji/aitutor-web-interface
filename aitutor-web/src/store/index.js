@@ -80,7 +80,7 @@ export default new Vuex.Store({
     async loadChapterTestProblems(_, chapter) {
       const problemsQuery = query(
         problemsCollection,
-        where("학년", "==", "중등 3-1"),
+        where("학년", "==", "중등 3-2"),
         where("소단원", "==", chapter),
         orderBy("confidence_rate", "desc"),
         limit(15)
