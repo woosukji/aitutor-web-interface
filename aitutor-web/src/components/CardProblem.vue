@@ -1,7 +1,7 @@
 <template>
   <v-card max-width="300" elevation="0">
     <v-card-text class="font-weight-bold pl-0 text-left">
-      <div v-katex:auto="katexConfig" :key="cardText">{{ cardText }}</div>
+      <div v-katex:auto="katexConfig">{{ cardText }}</div>
     </v-card-text>
 
     <v-img
