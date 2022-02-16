@@ -27,8 +27,15 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     userProfile: {},
+    loading: false,
   },
   mutations: {
+    loading(state) {
+      state.loading = true;
+    },
+    unLoading(state) {
+      state.loading = false;
+    },
     setUserProfile(state, val) {
       state.userProfile = val;
     },
@@ -111,10 +118,7 @@ export default new Vuex.Store({
         elapsedTime,
       });
     },
-    async loadProblemFigure(
-      _,
-      problemImgName = "풍산자  테스트북 중3_2_본문(학생용)1024_008_0.jpg"
-    ) {
+    loadProblemFigure(_, problemImgName = "풍산자  테스트북 중3_2_본문(학생용)1024_008_0.jpg") {
       const figName = `${problemImgName.slice(0, problemImgName.lastIndexOf(".jpg"))}_fig.jpg`;
       const figDir = `problem_images/mid_3_2/${figName}`;
 

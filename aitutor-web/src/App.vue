@@ -4,6 +4,9 @@
     <v-content>
       <router-view />
     </v-content>
+    <v-overlay :value="$store.state.loading">
+      <v-progress-circular indeterminate size="64"></v-progress-circular>
+    </v-overlay>
   </v-app>
 </template>
 

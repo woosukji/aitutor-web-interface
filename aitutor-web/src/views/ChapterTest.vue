@@ -41,16 +41,13 @@
       <div>Your Choice: {{ choices }}</div>
       <div>채점 결과: {{ results }}</div>
     </v-container>
-
-    <v-overlay :value="loading">
-      <v-progress-circular indeterminate size="64"></v-progress-circular>
-    </v-overlay>
   </div>
 </template>
 
 <script>
 import ChapterSelection from "@/components/ChapterSelection.vue";
 import Problem from "@/components/Problem.vue";
+import aggregateProblemAndFigure from "@/util/ProblemHelper";
 import { chapterLists } from "@/util/DemoHelper";
 
 export default {
@@ -60,7 +57,6 @@ export default {
     return {
       chapterList: chapterLists["중등 3-2"],
       mode: "select-chapter",
-      loading: false,
       nSolved: 0,
       nProblems: 3,
       problems: [],
@@ -71,36 +67,9 @@ export default {
   },
   computed: {},
   methods: {
-    getOptionListFromText(questionText) {
-      const optionPos = [];
-      for (let optionNum = 1; optionNum < 6; optionNum += 1) {
-        optionPos.push(questionText.lastIndexOf(`(${optionNum})`));
-      }
-      const optionPosSorted = [...optionPos].sort((a, b) => a - b);
-
-      const isValid =
-        optionPos.length > 0 &&
-        optionPos.every((ele) => ele > 0) &&
-        JSON.stringify(optionPos) === JSON.stringify(optionPosSorted);
-
-      if (isValid) {
-        const optionList = optionPos.map((ele, idx, arr) => {
-          return questionText.slice(ele + 3, arr[idx + 1]).trim();
-        });
-
-        let questionTextFiltered = questionText.slice(0, optionPos[0]).trim();
-
-        const firstWord = questionTextFiltered.split(/\s+/)[0];
-        if (!Number.isNaN(firstWord - parseFloat(firstWord))) {
-          questionTextFiltered = questionTextFiltered.slice(firstWord.length);
-        }
-
-        return { isValid, questionTextFiltered, optionList };
-      }
-      return { isValid };
-    },
+    aggregateProblemAndFigure,
     async handleChapterSelected(chapter) {
-      this.loading = true;
+      this.$store.commit("loading");
 
       const chapterProblems = await this.$store.dispatch(
         "loadChapterTestProblems",
@@ -112,38 +81,21 @@ export default {
       });
 
       const figureUrlList = (await Promise.allSettled(figurePromiseList)).map(
-        (prom) => (prom.status === "fulfilled" ? prom.value : "")
+        (promise) => (promise.status === "fulfilled" ? promise.value : "")
       );
 
       this.problems = chapterProblems
         .map((data, idx) => {
-          const { uid, text: questionText, answer = 1 } = data;
           const figureUrl = figureUrlList[idx];
-
-          const {
-            isValid,
-            questionTextFiltered = "",
-            optionList = [],
-          } = this.getOptionListFromText(questionText);
-
-          return {
-            uid,
-            imgSrc: figureUrl,
-            questionText: questionTextFiltered,
-            optionList,
-            answer,
-            isValid,
-          };
+          return this.aggregateProblemAndFigure(data, figureUrl);
         })
         .filter((data) => data.isValid);
 
       this.nProblems = this.problems.length;
-
       this.currentProblem = { ...this.problems[0] };
 
       this.mode = "solve-problems";
-
-      this.loading = false;
+      this.$store.commit("unLoading");
     },
     async handleProblemSolved(studentChoice) {
       this.choices.push(studentChoice);
@@ -168,13 +120,13 @@ export default {
       }
     },
     loadResult() {
-      this.loading = true;
+      this.$store.commit("loading");
       return this.loadingResolver(1000);
     },
     loadingResolver(time = 500) {
       return new Promise((resolve) => {
         setTimeout(() => {
-          this.loading = false;
+          this.$store.commit("unLoading");
           resolve();
         }, time);
       });

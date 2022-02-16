@@ -28,10 +28,6 @@
       <div>answer is {{ currentProblem.answer }}</div>
       <v-btn large @click="handleNextProblem">OK</v-btn>
     </v-container>
-
-    <v-overlay :value="loading">
-      <v-progress-circular indeterminate size="64"></v-progress-circular>
-    </v-overlay>
   </div>
 </template>
 
@@ -47,7 +43,6 @@ export default {
     return {
       problems,
       mode: "select-chapter",
-      loading: false,
       chapterList: ["대단원1", "대단원2", "대단원3"],
       nSolved: 0,
       nProblems: 3,
@@ -65,7 +60,7 @@ export default {
       this.mode = "solve-problems";
     },
     loadProblems() {
-      this.loading = true;
+      this.$state.commit("loading");
       this.currentProblem = { ...this.problems[0] };
       return this.loadingResolver();
     },
@@ -77,7 +72,7 @@ export default {
       this.mode = "show-answer";
     },
     loadAnswer() {
-      this.loading = true;
+      this.$state.commit("loading");
       return this.loadingResolver();
     },
     handleNextProblem() {
@@ -86,7 +81,7 @@ export default {
     loadingResolver(time = 500) {
       return new Promise((resolve) => {
         setTimeout(() => {
-          this.loading = false;
+          this.$state.commit("unLoading");
           resolve();
         }, time);
       });
