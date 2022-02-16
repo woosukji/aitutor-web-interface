@@ -1,9 +1,9 @@
 <template>
   <v-app>
     <navigation v-if="showNavigation" />
-    <v-content>
+    <v-main>
       <router-view />
-    </v-content>
+    </v-main>
     <v-overlay :value="$store.state.loading">
       <v-progress-circular indeterminate size="64"></v-progress-circular>
     </v-overlay>

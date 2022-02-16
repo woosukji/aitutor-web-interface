@@ -68,12 +68,8 @@ export default new Vuex.Store({
       const userRef = doc(usersCollection, user.uid);
       const userProfile = await getDoc(userRef);
 
-      console.log(userProfile.exists());
-
       // set user profile in state
       commit("setUserProfile", { uid: userProfile.id, ...userProfile.data() });
-
-      console.log(this.state.userProfile);
 
       // change route to dashboard
       if (router.currentRoute.path === "/") {
