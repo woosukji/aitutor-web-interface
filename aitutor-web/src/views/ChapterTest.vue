@@ -107,9 +107,18 @@ export default {
         chapter
       );
 
+      const figurePromiseList = chapterProblems.map((data) => {
+        return this.$store.dispatch("loadProblemFigure", data["파일명"]);
+      });
+
+      const figureUrlList = (await Promise.allSettled(figurePromiseList)).map(
+        (prom) => (prom.status === "fulfilled" ? prom.value : "")
+      );
+
       this.problems = chapterProblems
-        .map((data) => {
-          const { uid, 파일명: imgSrc, text: questionText, answer = 1 } = data;
+        .map((data, idx) => {
+          const { uid, text: questionText, answer = 1 } = data;
+          const figureUrl = figureUrlList[idx];
 
           const {
             isValid,
@@ -119,7 +128,7 @@ export default {
 
           return {
             uid,
-            imgSrc,
+            imgSrc: figureUrl,
             questionText: questionTextFiltered,
             optionList,
             answer,

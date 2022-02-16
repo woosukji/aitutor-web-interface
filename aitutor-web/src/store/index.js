@@ -12,7 +12,14 @@ import {
   where,
   serverTimestamp,
 } from "firebase/firestore";
-import { auth, usersCollection, problemsCollection, logsCollection } from "../plugins/firebase";
+import { ref, getDownloadURL } from "firebase/storage";
+import {
+  auth,
+  storage,
+  usersCollection,
+  problemsCollection,
+  logsCollection,
+} from "../plugins/firebase";
 import router from "../router/index";
 
 Vue.use(Vuex);
@@ -103,6 +110,17 @@ export default new Vuex.Store({
         isCorrect,
         elapsedTime,
       });
+    },
+    async loadProblemFigure(
+      _,
+      problemImgName = "풍산자  테스트북 중3_2_본문(학생용)1024_008_0.jpg"
+    ) {
+      const figName = `${problemImgName.slice(0, problemImgName.lastIndexOf(".jpg"))}_fig.jpg`;
+      const figDir = `problem_images/mid_3_2/${figName}`;
+
+      const problemImageRef = ref(storage, figDir);
+
+      return getDownloadURL(problemImageRef);
     },
   },
   modules: {},

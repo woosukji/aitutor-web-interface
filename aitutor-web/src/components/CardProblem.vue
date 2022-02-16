@@ -5,6 +5,7 @@
     </v-card-text>
 
     <v-img
+      v-if="cardImageSrc.length > 0"
       class="white--text align-end rounded-lg"
       height="200px"
       :src="cardImageSrc"
