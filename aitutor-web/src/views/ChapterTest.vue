@@ -27,7 +27,7 @@
       </v-row>
 
       <v-row>
-        <v-col>
+        <v-col class="pa-0">
           <problem
             :current-problem="currentProblem"
             @chosen="handleProblemSolved"

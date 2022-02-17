@@ -1,6 +1,6 @@
 <template>
   <v-container class="problem">
-    <v-row align="center" class="flex-column flex-sm-row">
+    <v-row class="flex-column flex-sm-row">
       <v-col class="d-flex justify-center justify-sm-start">
         <card-problem
           :card-image-src="currentProblem.imgSrc"
@@ -9,7 +9,7 @@
         </card-problem>
       </v-col>
 
-      <v-col>
+      <v-col class="align-self-center">
         <n-choice
           :option-list="currentProblem.optionList"
           @chosen="onChosen"
