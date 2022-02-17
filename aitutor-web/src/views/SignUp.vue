@@ -4,7 +4,9 @@
     <router-link to="/">sign up</router-link>
     <div class="katex-test">
       <textarea v-model="formula" cols="30" rows="10"></textarea>
-      <div v-katex:auto="katexConfig" :key="formula">{{ formula }}</div>
+      <div v-katex:auto="katexConfig" :key="formula" style="max-width: 600px">
+        {{ formula }}
+      </div>
     </div>
   </div>
 </template>

@@ -1,4 +1,36 @@
-const parseOptionListFromText = (questionText) => {
+const removeNumbering = (text) => {
+  const firstWord = text.split(/\s+/)[0];
+  const numberingRemoved = !Number.isNaN(firstWord - parseFloat(firstWord))
+    ? text.slice(firstWord.length)
+    : text;
+
+  return numberingRemoved;
+};
+
+const parseTabularForKatex = (text) => {
+  const pattern = /\\begin\{tabular\}([\s\S]+)\\end\{tabular\}/;
+  const tabularSearched = pattern.exec(text);
+
+  if (tabularSearched) {
+    const tabularContentForKatex = tabularSearched[1].replaceAll("$", "");
+    const tabularForKatex = `$$\\begin{array}${tabularContentForKatex}\\end{array}$$`;
+    return text.replace(pattern, tabularForKatex);
+  }
+
+  return text;
+};
+
+const parseQuestionText = (questionText) => {
+  /* text가 번호로 시작할 경우, 불필요한 넘버링이므로 제거 */
+  const numberingRemoved = removeNumbering(questionText);
+
+  /* text에 표(tabular)를 포함할 경우, KaTeX가 인식하도록 전처리 */
+  const tabularParsed = parseTabularForKatex(numberingRemoved);
+
+  return tabularParsed;
+};
+
+const extractOptionListFromText = (questionText) => {
   /*
   raw한 문제 OCR text 로부터 선택지와 문두 추출 & 문제 넘버링 제거
   **문제는 객관식이며, 최소 5개의 선지**로 "... (1) ~~ (2) ~~ ... (5) ~~" 형태라고 가정
@@ -22,15 +54,9 @@ const parseOptionListFromText = (questionText) => {
       return questionText.slice(pos + 3, arr[idx + 1]).trim();
     });
 
-    let questionTextFiltered = questionText.slice(0, optionPos[0]).trim();
+    const realQuestionText = questionText.slice(0, optionPos[0]).trim();
 
-    /* text가 번호로 시작할 경우, 불필요한 넘버링이므로 제거 */
-    const firstWord = questionTextFiltered.split(/\s+/)[0];
-    if (!Number.isNaN(firstWord - parseFloat(firstWord))) {
-      questionTextFiltered = questionTextFiltered.slice(firstWord.length);
-    }
-
-    return { isValid, questionTextFiltered, optionList };
+    return { isValid, questionTextFiltered: parseQuestionText(realQuestionText), optionList };
   }
   return { isValid: false };
 };
@@ -47,7 +73,7 @@ const aggregateProblemAndFigure = (problemData, figureUrl) => {
     isValid,
     questionTextFiltered = "",
     optionList = [],
-  } = parseOptionListFromText(questionText);
+  } = extractOptionListFromText(questionText);
 
   return {
     uid,

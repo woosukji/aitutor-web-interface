@@ -11,6 +11,7 @@ const katexConfig = {
       { left: "\\(", right: "\\)", display: false },
       { left: "\\[", right: "\\]", display: true },
     ],
+    strict: false,
   },
 };
 
