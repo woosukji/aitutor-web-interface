@@ -15,7 +15,7 @@
         class="shrink mt-1 hidden-sm-and-down"
         contain
         min-width="100"
-        src="../assets/agilesoda_name.png"
+        src="../assets/agilesoda_name_white.png"
         width="100"
       />
     </div>

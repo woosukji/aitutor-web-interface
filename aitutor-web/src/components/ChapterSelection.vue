@@ -1,7 +1,9 @@
 <template>
   <v-card max-width="800" elevation="0">
     <v-list-item>
-      <div class="text-h6">학습할 소단원을 선택해 주세요.</div>
+      <div class="font-weight-bold text-sm-h6">
+        학습할 소단원을 선택해 주세요.
+      </div>
 
       <v-spacer></v-spacer>
 

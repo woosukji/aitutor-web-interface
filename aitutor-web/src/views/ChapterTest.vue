@@ -10,7 +10,7 @@
 
     <v-container
       v-else-if="mode === 'solve-problems'"
-      class="solve-problems pa-8"
+      class="solve-problems mb-auto mb-sm-0 pa-8"
     >
       <v-row>
         <v-col>
