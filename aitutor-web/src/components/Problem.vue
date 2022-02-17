@@ -30,12 +30,15 @@ export default {
     currentProblem: Object,
   },
   data() {
-    return {};
+    return {
+      startTime: new Date().getTime(),
+    };
   },
   computed: {},
   methods: {
-    onChosen(e) {
-      this.$emit("chosen", e);
+    onChosen(choice) {
+      const elapsedTime = new Date().getTime() - this.startTime;
+      this.$emit("chosen", choice, elapsedTime);
     },
   },
 };

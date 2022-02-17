@@ -97,27 +97,28 @@ export default {
       this.mode = "solve-problems";
       this.$store.commit("unLoading");
     },
-    async handleProblemSolved(studentChoice) {
+    async handleProblemSolved(studentChoice, elapsedTime) {
       this.choices.push(studentChoice);
 
       const isCorrect = studentChoice === this.currentProblem.answer;
       this.results.push(isCorrect);
 
-      this.nSolved += 1;
-      if (this.nSolved < this.problems.length) {
-        this.currentProblem = { ...this.problems[this.nSolved] };
+      const log = {
+        problemUid: this.currentProblem.uid,
+        studentChoice,
+        isCorrect,
+        elapsedTime,
+      };
+      this.$store.dispatch("recordProblemSolveLog", log);
 
-        const log = {
-          problemUid: this.currentProblem.uid,
-          studentChoice,
-          isCorrect,
-          elapsedTime: 100,
-        };
-        this.$store.dispatch("recordProblemSolveLog", log);
-      } else {
+      this.nSolved += 1;
+      if (this.nSolved === this.problems.length) {
         await this.loadResult();
         this.mode = "show-result";
+        return;
       }
+
+      this.currentProblem = { ...this.problems[this.nSolved] };
     },
     loadResult() {
       this.$store.commit("loading");
