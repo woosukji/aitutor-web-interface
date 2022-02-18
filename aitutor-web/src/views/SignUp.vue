@@ -5,13 +5,14 @@
         <span>Back</span>
       </v-btn>
     </base-top-bar>
-    <v-container class="panel d-flex flex-column justify-center align-center">
+    <v-container class="panel d-flex justify-center align-center pa-8">
       <v-form
-        class="login-form d-flex flex-column"
+        class="login-form flex-grow-1 d-flex flex-column"
         @submit.prevent="handleSignUp"
         v-model="valid"
         ref="form"
         lazy-validation
+        style="max-width: 300px"
       >
         <v-text-field
           v-model="name"
