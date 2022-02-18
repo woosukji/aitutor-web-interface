@@ -1,6 +1,11 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  deleteUser,
+  signInWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
 import {
   addDoc,
   doc,
@@ -11,7 +16,7 @@ import {
   query,
   where,
   serverTimestamp,
-  setDoc,
+  /* setDoc, */
 } from "firebase/firestore";
 import { ref, getDownloadURL } from "firebase/storage";
 import {
@@ -45,11 +50,12 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    async signup({ dispatch }, form) {
+    async signup(/* { dispatch } */ _, form) {
       // sign user up
       const { user } = await createUserWithEmailAndPassword(auth, form.email, form.password);
+      await deleteUser(user);
 
-      // create user object in userCollections
+      /* // create user object in userCollections
       const userRef = doc(usersCollection, user.uid);
       setDoc(userRef, {
         email: form.email,
@@ -58,7 +64,7 @@ export default new Vuex.Store({
       });
 
       // fetch user profile and set in state
-      dispatch("fetchUserProfile", user);
+      dispatch("fetchUserProfile", user); */
     },
     async login({ dispatch }, form) {
       // sign user in
