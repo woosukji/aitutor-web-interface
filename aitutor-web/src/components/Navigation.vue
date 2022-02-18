@@ -1,27 +1,5 @@
 <template>
-  <v-app-bar color="primary" dark app>
-    <div class="logo d-flex align-center">
-      <v-img
-        alt="Agilesoda Logo"
-        class="shrink mr-2"
-        contain
-        src="../assets/agilesoda_logo.png"
-        transition="scale-transition"
-        width="40"
-      />
-
-      <v-img
-        alt="Agilesoda Name"
-        class="shrink mt-1 hidden-sm-and-down"
-        contain
-        min-width="100"
-        src="../assets/agilesoda_name_white.png"
-        width="100"
-      />
-    </div>
-
-    <v-spacer></v-spacer>
-
+  <base-top-bar color="primary" dark app>
     <div class="main-dash-toggle d-flex align-center" v-if="showMainDashToggle">
       <v-btn to="/main" text>
         <span>Main</span>
@@ -53,12 +31,15 @@
         </v-list-item>
       </v-list>
     </v-menu>
-  </v-app-bar>
+  </base-top-bar>
 </template>
 
 <script>
+import BaseTopBar from "@/components/BaseTopBar.vue";
+
 export default {
   name: "Nagivation",
+  components: { BaseTopBar },
   data() {
     return {};
   },
