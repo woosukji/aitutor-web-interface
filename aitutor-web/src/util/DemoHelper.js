@@ -1,3 +1,16 @@
+const semesterList = [
+  "초등 5-1",
+  "초등 5-2",
+  "초등 6-1",
+  "초등 6-2",
+  "중등 1-1",
+  "중등 1-2",
+  "중등 2-1",
+  "중등 2-2",
+  "중등 3-1",
+  "중등 3-2",
+];
+
 const chapterLists = {
   "중등 3-1": [
     "제곱근",
@@ -97,4 +110,4 @@ const problems = [
   },
 ];
 
-export { chapterLists, problems };
+export { semesterList, chapterLists, problems };

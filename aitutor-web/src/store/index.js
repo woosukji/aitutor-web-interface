@@ -11,6 +11,7 @@ import {
   query,
   where,
   serverTimestamp,
+  setDoc,
 } from "firebase/firestore";
 import { ref, getDownloadURL } from "firebase/storage";
 import {
@@ -49,8 +50,11 @@ export default new Vuex.Store({
       const { user } = await createUserWithEmailAndPassword(auth, form.email, form.password);
 
       // create user object in userCollections
-      await usersCollection.doc(user.uid).set({
+      const userRef = doc(usersCollection, user.uid);
+      setDoc(userRef, {
+        email: form.email,
         name: form.name,
+        semester: form.semester,
       });
 
       // fetch user profile and set in state
