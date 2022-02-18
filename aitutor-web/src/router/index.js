@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 import Landing from '../views/Landing.vue';
 import SignUp from '../views/SignUp.vue';
 import ChangeInfo from '../views/ChangeInfo.vue';
+import KatexTest from '../views/KatexTest.vue';
 
 Vue.use(VueRouter);
 
@@ -44,6 +45,11 @@ const routes = [
     path: '/chapter-test',
     name: 'ChapterTest',
     component: () => import('../views/ChapterTest.vue'),
+  },
+  {
+    path: '/katex-test',
+    name: 'KatexTest',
+    component: KatexTest,
   },
 ];
 
