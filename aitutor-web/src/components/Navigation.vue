@@ -26,7 +26,7 @@
         <v-list-item to="/change-info">
           <span>Change Info</span>
         </v-list-item>
-        <v-list-item to="/">
+        <v-list-item @click="handleLogout">
           <span>Log out</span>
         </v-list-item>
       </v-list>
@@ -49,6 +49,11 @@ export default {
     },
     showExitBtn() {
       return ["/daily-problems", "/chapter-test"].includes(this.$route.path);
+    },
+  },
+  methods: {
+    handleLogout() {
+      this.$store.dispatch("logout");
     },
   },
 };
