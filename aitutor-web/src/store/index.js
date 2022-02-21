@@ -33,14 +33,23 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     userProfile: {},
-    loading: false,
+    showLoading: false,
+    showError: false,
+    errorMessage: "",
   },
   mutations: {
     loading(state) {
-      state.loading = true;
+      state.showLoading = true;
     },
     unLoading(state) {
-      state.loading = false;
+      state.showLoading = false;
+    },
+    error(state, message, time = 3000) {
+      state.showError = true;
+      state.errorMessage = message;
+      setTimeout(() => {
+        state.showError = false;
+      }, time);
     },
     setUserProfile(state, val) {
       state.userProfile = val;

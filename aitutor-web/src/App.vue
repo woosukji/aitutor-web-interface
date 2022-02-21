@@ -4,9 +4,16 @@
     <v-main>
       <router-view />
     </v-main>
-    <v-overlay :value="$store.state.loading">
+    <v-overlay :value="$store.state.showLoading">
       <v-progress-circular indeterminate size="64"></v-progress-circular>
     </v-overlay>
+    <v-alert
+      class="alert"
+      :value="$store.state.showError"
+      type="error"
+      transition="fade-transition"
+      >{{ $store.state.errorMessage }}</v-alert
+    >
   </v-app>
 </template>
 
@@ -50,5 +57,14 @@ a {
   &.router-link-exact-active {
     color: #42b983;
   }
+}
+
+.alert {
+  position: absolute !important;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  text-align: center;
 }
 </style>
