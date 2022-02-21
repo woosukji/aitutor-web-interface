@@ -92,9 +92,6 @@ export default new Vuex.Store({
 
       // clear user data from state
       commit("setUserProfile", {});
-
-      // redirect to login view
-      router.push("/login");
     },
 
     async loadChapterTestProblems(_, chapter) {
