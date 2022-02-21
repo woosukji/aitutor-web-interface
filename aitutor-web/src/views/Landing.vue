@@ -22,11 +22,31 @@ export default {
   components: { BaseTopBar, LoginForm },
   name: "Landing",
   methods: {
-    handleLogin(form) {
-      this.$store.dispatch("login", {
-        email: form.email,
-        password: form.password,
-      });
+    async handleLogin(form) {
+      this.$store.commit("loading");
+
+      try {
+        await this.$store.dispatch("login", {
+          email: form.email,
+          password: form.password,
+        });
+        // change route to dashboard
+        this.$router.push("/main");
+      } catch (e) {
+        if (
+          e.code === "auth/wrong-password" ||
+          e.code === "auth/user-not-found"
+        ) {
+          this.$store.commit(
+            "error",
+            "아이디 또는 비밀번호가 올바르지 않습니다!"
+          );
+        } else {
+          this.$store.commit("error", e.code);
+          console.dir(e);
+        }
+      }
+      this.$store.commit("unLoading");
     },
   },
 };

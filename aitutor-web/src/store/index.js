@@ -26,7 +26,6 @@ import {
   problemsCollection,
   logsCollection,
 } from "../plugins/firebase";
-import router from "../router/index";
 
 Vue.use(Vuex);
 
@@ -89,11 +88,6 @@ export default new Vuex.Store({
 
       // set user profile in state
       commit("setUserProfile", { uid: userProfile.id, ...userProfile.data() });
-
-      // change route to dashboard
-      if (router.currentRoute.path === "/") {
-        router.push("/main");
-      }
     },
     async logout({ commit }) {
       // log user out
