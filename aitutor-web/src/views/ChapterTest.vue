@@ -133,6 +133,11 @@ export default {
       });
     },
   },
+  beforeRouteLeave(_to, _from, next) {
+    if (window.confirm("소단원 테스트를 종료하시겠습니까?")) {
+      next();
+    }
+  },
 };
 </script>
 

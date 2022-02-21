@@ -32,6 +32,12 @@ export default {
       return !["/", "/sign-up"].includes(this.$route.path);
     },
   },
+  beforeMount() {
+    window.addEventListener("beforeunload", (event) => {
+      event.preventDefault();
+      event.returnValue = ""; // eslint-disable-line no-param-reassign
+    });
+  },
 };
 </script>
 
