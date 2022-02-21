@@ -3,6 +3,8 @@
     @submit.prevent="onSubmit"
     class="login-form d-flex flex-column"
     v-model="valid"
+    ref="loginForm"
+    lazy-validation
   >
     <v-text-field
       v-model="email"
@@ -29,8 +31,8 @@ export default {
       valid: false,
       email: "example@agilesoda.ai",
       emailRules: [
-        (v) => !!v || "E-mail is required",
-        (v) => /.+@.+/.test(v) || "E-mail must be valid",
+        (v) => !!v || "이메일을 입력해 주세요.",
+        (v) => /.+@.+\..+/.test(v) || "올바르지 않은 이메일입니다.",
       ],
       password: "",
     };
@@ -38,6 +40,10 @@ export default {
   computed: {},
   methods: {
     onSubmit() {
+      if (!this.$refs.loginForm.validate()) {
+        return;
+      }
+
       this.$emit("submit", {
         email: this.email,
         password: this.password,

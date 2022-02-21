@@ -10,7 +10,7 @@
         class="login-form flex-grow-1 d-flex flex-column"
         @submit.prevent="handleSignUp"
         v-model="valid"
-        ref="form"
+        ref="signUpForm"
         lazy-validation
         style="max-width: 300px"
       >
@@ -88,7 +88,7 @@ export default {
   computed: {},
   methods: {
     async handleSignUp() {
-      if (!this.$refs.form.validate()) {
+      if (!this.$refs.signUpForm.validate()) {
         return;
       }
       this.$store.commit("loading");
