@@ -37,6 +37,11 @@ export default {
       event.preventDefault();
       event.returnValue = ""; // eslint-disable-line no-param-reassign
     });
+    window.addEventListener("unload", () => {
+      if (Object.keys(this.$store.state.userProfile).length !== 0) {
+        this.$store.dispatch("logout");
+      }
+    });
   },
 };
 </script>
