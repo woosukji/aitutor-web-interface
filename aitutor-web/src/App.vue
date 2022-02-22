@@ -12,8 +12,8 @@
       :value="$store.state.showAlert"
       :type="$store.state.alertType"
       transition="fade-transition"
-      >{{ $store.state.alertMessage }}</v-alert
-    >
+      ><span v-html="$store.state.alertMessage"></span
+    ></v-alert>
   </v-app>
 </template>
 

@@ -14,6 +14,7 @@
     ></v-text-field>
     <v-text-field
       v-model="password"
+      :rules="passwordRules"
       type="password"
       label="Password"
       required
@@ -35,6 +36,7 @@ export default {
         (v) => /.+@.+\..+/.test(v) || "올바르지 않은 이메일입니다.",
       ],
       password: "",
+      passwordRules: [(v) => !!v || "비밀번호를 입력해 주세요."],
     };
   },
   computed: {},
