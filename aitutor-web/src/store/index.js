@@ -33,8 +33,9 @@ export default new Vuex.Store({
   state: {
     userProfile: {},
     showLoading: false,
-    showError: false,
-    errorMessage: "",
+    showAlert: false,
+    alertMessage: "",
+    alertType: "error",
   },
   mutations: {
     loading(state) {
@@ -43,12 +44,20 @@ export default new Vuex.Store({
     unLoading(state) {
       state.showLoading = false;
     },
-    error(state, message, time = 3000) {
-      state.showError = true;
-      state.errorMessage = message;
+    alert(state, alertConfig) {
+      /*
+      지정한 시간동안 App.vue 의 <v-alert> 표시
+      type : ["success", "info", "warning", "error"]
+      */
+      const { message, type = "error", timeMs = 3000 } = alertConfig;
+
+      state.alertMessage = message;
+      state.alertType = type;
+
+      state.showAlert = true;
       setTimeout(() => {
-        state.showError = false;
-      }, time);
+        state.showAlert = false;
+      }, timeMs);
     },
     setUserProfile(state, val) {
       state.userProfile = val;

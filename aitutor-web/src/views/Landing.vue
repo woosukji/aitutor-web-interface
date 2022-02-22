@@ -33,17 +33,16 @@ export default {
         // change route to dashboard
         this.$router.push("/main");
       } catch (e) {
-        if (
-          e.code === "auth/wrong-password" ||
-          e.code === "auth/user-not-found"
-        ) {
-          this.$store.commit(
-            "error",
-            "아이디 또는 비밀번호가 올바르지 않습니다!"
-          );
-        } else {
-          this.$store.commit("error", e.code);
-          console.dir(e);
+        switch (e.code) {
+          case "auth/wrong-password":
+          case "auth/user-not-found":
+            this.$store.commit("alert", {
+              message: "아이디 또는 비밀번호가 올바르지 않습니다!",
+            });
+            break;
+          default:
+            this.$store.commit("alert", { message: e.code });
+            console.dir(e);
         }
       }
       this.$store.commit("unLoading");

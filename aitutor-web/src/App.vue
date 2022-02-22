@@ -9,10 +9,10 @@
     </v-overlay>
     <v-alert
       class="alert"
-      :value="$store.state.showError"
-      type="error"
+      :value="$store.state.showAlert"
+      :type="$store.state.alertType"
       transition="fade-transition"
-      >{{ $store.state.errorMessage }}</v-alert
+      >{{ $store.state.alertMessage }}</v-alert
     >
   </v-app>
 </template>

@@ -102,14 +102,18 @@ export default {
         });
         this.$router.push("/");
       } catch (e) {
-        if (e.code === "auth/email-already-in-use") {
-          this.emailErrors = ["이미 가입된 이메일입니다."];
-          const unwatch = this.$watch("email", () => {
-            this.emailErrors = [];
-            unwatch();
-          });
-        } else {
-          console.dir(e);
+        switch (e.code) {
+          case "auth/email-already-in-use": {
+            this.emailErrors = ["이미 가입된 이메일입니다."];
+            const unwatch = this.$watch("email", () => {
+              this.emailErrors = [];
+              unwatch();
+            });
+            break;
+          }
+          default:
+            this.$store.commit("alert", { message: e.code });
+            console.dir(e);
         }
       }
 
