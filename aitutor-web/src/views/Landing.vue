@@ -40,6 +40,13 @@ export default {
               message: "아이디 또는 비밀번호가 올바르지 않습니다!",
             });
             break;
+          case "user-unauthorized":
+            this.$store.commit("alert", {
+              message:
+                "계정이 확인되지 않았습니다. 계정 확인에는 최대 1~2일이 소요됩니다.",
+              timeMs: 10000,
+            });
+            break;
           default:
             this.$store.commit("alert", { message: e.code });
             console.dir(e);

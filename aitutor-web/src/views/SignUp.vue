@@ -101,6 +101,12 @@ export default {
           semester: this.semester,
         });
         this.$router.push("/");
+        this.$store.commit("alert", {
+          message:
+            "회원가입이 완료되었습니다! 1~2일 내 계정 확인 후 로그인 가능합니다.",
+          type: "success",
+          timeMs: 10000,
+        });
       } catch (e) {
         switch (e.code) {
           case "auth/email-already-in-use": {
