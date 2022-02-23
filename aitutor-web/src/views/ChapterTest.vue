@@ -1,16 +1,15 @@
 <template>
-  <div class="chapter-test d-flex justify-center align-center">
+  <div class="chapter-test d-flex justify-center align-center pa-8">
     <chapter-selection
       v-if="mode === 'select-chapter'"
-      class="select-chapter"
-      style="flex-grow: 1"
+      class="select-chapter flex-grow-1"
       :chapter-list="chapterList"
       @selected="handleChapterSelected"
     ></chapter-selection>
 
     <v-container
       v-else-if="mode === 'solve-problems'"
-      class="solve-problems mb-auto mb-sm-0 pa-8"
+      class="solve-problems mb-auto mt-sm-16"
     >
       <v-row>
         <v-col>
@@ -37,9 +36,52 @@
       </v-row>
     </v-container>
 
-    <v-container v-else-if="mode === 'show-result'">
-      <div>Your Choice: {{ choices }}</div>
-      <div>채점 결과: {{ results }}</div>
+    <v-container
+      v-else-if="mode === 'show-result'"
+      class="show-result mb-auto mt-sm-16"
+    >
+      <v-row class="justify-center pa-4 font-weight-bold text-h5">
+        <div class="blue--text">{{ `${totalScore} / ${nProblems}` }}</div>
+        <div class="ml-4">잘 하고 있어요!</div>
+      </v-row>
+      <v-row class="flex-column flex-sm-row">
+        <v-col class="flex-grow-0 d-flex justify-start justify-sm-end pb-0">
+          <div style="position: relative">
+            <span class="text-h6">{{ showResultIdx + 1 }}.</span>
+            <v-icon
+              v-if="results[showResultIdx]"
+              style="position: absolute; top: 0; left: 0"
+              color="red"
+            >
+              mdi-checkbox-blank-circle-outline
+            </v-icon>
+            <v-icon
+              v-else
+              style="position: absolute; top: 0; left: 0"
+              color="red"
+            >
+              mdi-check
+            </v-icon>
+          </div>
+        </v-col>
+        <v-col class="flex-grow-1">
+          <problem-result
+            :current-problem="problems[showResultIdx]"
+            :student-choice="choices[showResultIdx]"
+            :isCorrect="results[showResultIdx]"
+            @next="showResultIdx = Math.min(nProblems - 1, showResultIdx + 1)"
+            @previous="showResultIdx = Math.max(0, showResultIdx - 1)"
+            :key="showResultIdx"
+          ></problem-result>
+        </v-col>
+        <v-col class="problem-list">
+          <v-btn-toggle v-model="showResultIdx" class="d-flex flex-wrap" group>
+            <v-btn v-for="(_, idx) in problems" :key="idx">
+              {{ `${idx + 1}번` }}
+            </v-btn>
+          </v-btn-toggle>
+        </v-col>
+      </v-row>
     </v-container>
   </div>
 </template>
@@ -47,12 +89,13 @@
 <script>
 import ChapterSelection from "@/components/ChapterSelection.vue";
 import Problem from "@/components/Problem.vue";
+import ProblemResult from "@/components/ProblemResult.vue";
 import aggregateProblemAndFigure from "@/util/ProblemHelper";
 import { chapterLists } from "@/util/DemoHelper";
 
 export default {
   name: "ChapterTest",
-  components: { ChapterSelection, Problem },
+  components: { ChapterSelection, Problem, ProblemResult },
   data() {
     return {
       chapterList: chapterLists["중등 3-2"],
@@ -63,9 +106,14 @@ export default {
       currentProblem: {},
       choices: [],
       results: [],
+      showResultIdx: 0,
     };
   },
-  computed: {},
+  computed: {
+    totalScore() {
+      return this.results.reduce((acc, cur) => acc + cur, 0);
+    },
+  },
   methods: {
     aggregateProblemAndFigure,
     async handleChapterSelected(chapter) {
@@ -148,5 +196,13 @@ export default {
 
 .solve-problems {
   max-width: 800px;
+}
+
+.show-result {
+  max-width: 700px;
+
+  .problem-list {
+    max-width: 300px;
+  }
 }
 </style>
