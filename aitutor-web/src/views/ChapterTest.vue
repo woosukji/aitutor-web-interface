@@ -12,6 +12,14 @@
       class="solve-problems mb-auto mt-sm-16"
     >
       <v-row>
+        <v-col class="d-flex justify-end">
+          <report-bad-problem
+            :current-problem="currentProblem"
+          ></report-bad-problem>
+        </v-col>
+      </v-row>
+
+      <v-row>
         <v-col>
           <v-progress-linear
             :value="(nSolved / nProblems) * 100"
@@ -89,13 +97,14 @@
 <script>
 import ChapterSelection from "@/components/ChapterSelection.vue";
 import Problem from "@/components/Problem.vue";
+import ReportBadProblem from "@/components/ReportBadProblem.vue";
 import ProblemResult from "@/components/ProblemResult.vue";
 import aggregateProblemAndFigure from "@/util/ProblemHelper";
 import { chapterLists } from "@/util/DemoHelper";
 
 export default {
   name: "ChapterTest",
-  components: { ChapterSelection, Problem, ProblemResult },
+  components: { ChapterSelection, Problem, ReportBadProblem, ProblemResult },
   data() {
     return {
       chapterList: [],

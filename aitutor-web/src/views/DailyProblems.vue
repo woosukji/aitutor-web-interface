@@ -13,7 +13,15 @@
       class="solve-problems pa-8"
     >
       <v-row>
-        <v-col>
+        <v-col class="d-flex justify-end">
+          <report-bad-problem
+            :current-problem="currentProblem"
+          ></report-bad-problem>
+        </v-col>
+      </v-row>
+
+      <v-row>
+        <v-col class="pa-0">
           <problem
             :current-problem="currentProblem"
             @chosen="handleProblemSolved"

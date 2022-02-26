@@ -29,6 +29,20 @@ const storage = getStorage();
 const usersCollection = collection(db, "users");
 const problemsCollection = collection(db, "problems");
 const logsCollection = collection(db, "logs");
+const smallChapterListsCollection = collection(db, "smallChapterLists");
+const middleChapterListsCollection = collection(db, "middleChapterLists");
+const reportsCollection = collection(db, "reports");
 
 // export utils/refs
-export { app, auth, db, storage, usersCollection, problemsCollection, logsCollection };
+export {
+  app,
+  auth,
+  db,
+  storage,
+  usersCollection,
+  problemsCollection,
+  logsCollection,
+  smallChapterListsCollection,
+  middleChapterListsCollection,
+  reportsCollection,
+};

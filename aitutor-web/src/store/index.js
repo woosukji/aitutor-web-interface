@@ -20,6 +20,9 @@ import {
   usersCollection,
   problemsCollection,
   logsCollection,
+  smallChapterListsCollection,
+  middleChapterListsCollection,
+  reportsCollection,
 } from "../plugins/firebase";
 
 Vue.use(Vuex);
@@ -146,6 +149,18 @@ export default new Vuex.Store({
       const problemImageRef = ref(storage, figDir);
 
       return getDownloadURL(problemImageRef);
+    },
+    async recordBadProblemReport({ state }, reportData) {
+      const { description, problemUid } = reportData;
+      const faults = reportData.faults.slice();
+
+      await addDoc(reportsCollection, {
+        submitTime: serverTimestamp(),
+        userUid: state.userProfile.uid,
+        problemUid,
+        description,
+        faults,
+      });
     },
   },
   modules: {},
