@@ -24,6 +24,7 @@ import {
   middleChapterListsCollection,
   reportsCollection,
 } from "../plugins/firebase";
+import { extractOptionListFromText } from "../util/ProblemHelper";
 
 Vue.use(Vuex);
 
@@ -131,6 +132,53 @@ export default new Vuex.Store({
       });
       return chapterTestProblems;
     },
+    async loadRecommendedProblem({ state, dispatch }, data) {
+      const { middleChapter, sessionRecords } = data;
+
+      const recommendedProblemUid = await dispatch("loadRecommendedProblemUid", {
+        userUid: state.userProfile.uid,
+        middleChapter,
+        sessionRecords,
+      });
+      console.log(recommendedProblemUid);
+
+      const problemRef = doc(problemsCollection, recommendedProblemUid);
+      const recommendedProblem = await getDoc(problemRef);
+      console.log(recommendedProblem);
+
+      return { uid: recommendedProblem.id, ...recommendedProblem.data() };
+    },
+    async loadRecommendedProblemUid(_, data) {
+      /*
+      TODO: 문제 추천 알고리즘 implementation
+      *** input(data): 현재 문제풀이 세션에서 유저의 사용 정보
+                        - userUid: 유저 UID
+                        - middleChapter: 선택한 중단원 이름
+                        - sessionRecords: 현재 세션의 풀이 기록;
+                                          {problemUid: 문제 UID, isCorrect: 정답 여부}
+                                          와 같은 Object가 풀이 순서에 따라 나열된 Array
+      */
+      const { middleChapter } = data;
+
+      const problemsQuery = query(
+        problemsCollection,
+        where("중단원", "==", middleChapter),
+        orderBy("confidence_rate", "desc"),
+        limit(15)
+      );
+      const querySnapshot = await getDocs(problemsQuery);
+
+      const filteredRecommendedProblems = querySnapshot.docs
+        .map((document) => {
+          return { uid: document.id, ...document.data() };
+        })
+        .filter((problem) => {
+          return extractOptionListFromText(problem.text).isValid;
+        });
+
+      const index = Math.floor(Math.random() * filteredRecommendedProblems.length);
+      return filteredRecommendedProblems[index].uid;
+    },
     async recordProblemSolveLog({ state }, data) {
       const { problemUid, studentChoice, isCorrect, elapsedTime } = data;
       await addDoc(logsCollection, {
@@ -142,7 +190,7 @@ export default new Vuex.Store({
         elapsedTime,
       });
     },
-    loadProblemFigure(_, problemImgName = "풍산자  테스트북 중3_2_본문(학생용)1024_008_0.jpg") {
+    loadProblemFigureUrl(_, problemImgName = "풍산자  테스트북 중3_2_본문(학생용)1024_008_0.jpg") {
       const figName = `${problemImgName.slice(0, problemImgName.lastIndexOf(".jpg"))}_fig.jpg`;
       const figDir = `problem_images/mid_3_2/${figName}`;
 

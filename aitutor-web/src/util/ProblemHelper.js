@@ -97,4 +97,4 @@ const aggregateProblemAndFigure = (problemData, figureUrl) => {
   };
 };
 
-export default aggregateProblemAndFigure;
+export { aggregateProblemAndFigure, extractOptionListFromText };

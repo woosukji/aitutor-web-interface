@@ -25,7 +25,6 @@
           <problem
             :current-problem="currentProblem"
             @chosen="handleProblemSolved"
-            :key="nSolved"
           ></problem>
         </v-col>
       </v-row>
@@ -42,19 +41,22 @@
 <script>
 import ChapterSelection from "@/components/ChapterSelection.vue";
 import Problem from "@/components/Problem.vue";
-import { problems } from "@/util/DemoHelper";
+import ReportBadProblem from "@/components/ReportBadProblem.vue";
+import { aggregateProblemAndFigure } from "@/util/ProblemHelper";
 
 export default {
-  name: "ChapterTest",
-  components: { ChapterSelection, Problem },
+  name: "DailyProblems",
+  components: { ChapterSelection, Problem, ReportBadProblem },
   data() {
     return {
-      problems,
       mode: "select-chapter",
       chapter: "",
       chapterList: [],
       currentProblem: {},
+      sessionRecords: [],
+      nSolved: 0,
       choices: [],
+      results: [],
     };
   },
   computed: {},
@@ -66,21 +68,55 @@ export default {
     this.$store.commit("unLoading");
   },
   methods: {
-    async handleChapterSelected(e) {
-      console.log(`selection recieved: ${e}`);
+    aggregateProblemAndFigure,
+    async handleChapterSelected(chapter) {
+      this.chapter = chapter;
 
-      await this.loadProblems();
+      await this.loadNextProblem();
 
       this.mode = "solve-problems";
     },
-    loadProblems() {
-      this.$state.commit("loading");
-      this.currentProblem = { ...this.problems[0] };
-      return this.loadingResolver();
+    async loadNextProblem() {
+      this.$store.commit("loading");
+
+      const recommendedProblem = await this.$store.dispatch(
+        "loadRecommendedProblem",
+        {
+          middleChapter: this.chapter,
+          sessionRecords: this.sessionRecords,
+        }
+      );
+      console.log(recommendedProblem);
+
+      const figureUrl =
+        (await this.$store
+          .dispatch("loadProblemFigureUrl", recommendedProblem["파일명"])
+          .catch(() => {})) ?? "";
+
+      this.currentProblem = {
+        ...aggregateProblemAndFigure(recommendedProblem, figureUrl),
+      };
+
+      this.$store.commit("unLoading");
     },
-    async handleProblemSolved(choice) {
-      this.nSolved += 1;
-      this.choices.push(choice);
+    async handleProblemSolved(studentChoice, elapsedTime) {
+      this.choices.push(studentChoice);
+
+      const isCorrect = studentChoice === this.currentProblem.answer;
+      this.results.push(isCorrect);
+
+      this.sessionRecords.push({
+        problemUid: this.currentProblem.uid,
+        isCorrect,
+      });
+
+      const log = {
+        problemUid: this.currentProblem.uid,
+        studentChoice,
+        isCorrect,
+        elapsedTime,
+      };
+      this.$store.dispatch("recordProblemSolveLog", log);
 
       await this.loadAnswer();
       this.mode = "show-answer";
@@ -89,7 +125,9 @@ export default {
       this.$state.commit("loading");
       return this.loadingResolver();
     },
-    handleNextProblem() {
+    async handleNextProblem() {
+      await this.loadNextProblem();
+
       this.mode = "solve-problems";
     },
     loadingResolver(time = 500) {

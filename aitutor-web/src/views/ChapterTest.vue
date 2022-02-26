@@ -99,8 +99,7 @@ import ChapterSelection from "@/components/ChapterSelection.vue";
 import Problem from "@/components/Problem.vue";
 import ReportBadProblem from "@/components/ReportBadProblem.vue";
 import ProblemResult from "@/components/ProblemResult.vue";
-import aggregateProblemAndFigure from "@/util/ProblemHelper";
-import { chapterLists } from "@/util/DemoHelper";
+import { aggregateProblemAndFigure } from "@/util/ProblemHelper";
 
 export default {
   name: "ChapterTest",
