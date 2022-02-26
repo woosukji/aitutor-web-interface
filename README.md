@@ -10,3 +10,28 @@
 <img alt="Show Demo" src="https://img.shields.io/badge/-show%20demo-blue?style=for-the-badge" />
 </a>
 </p>
+
+## Requirements
+
+- [Git](https://git-scm.com/downloads)
+- [Node.js](https://nodejs.org/ko/)
+
+## Getting Started
+
+```bash
+git clone https://github.com/woosukji/aitutor-web-interface.git
+
+cd aitutor-web-interface/aitutor-web
+
+npm install
+
+##################################################
+#                                                #
+#   create aitutor-web/.env.local and type:      #
+#                                                #
+#   VUE_APP_API_KEY=(Firebase API Key)           #
+#                                                #
+##################################################
+
+npm run serve
+```
