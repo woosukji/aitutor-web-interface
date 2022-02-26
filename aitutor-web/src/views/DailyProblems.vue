@@ -1,9 +1,8 @@
 <template>
-  <div class="daily-problems d-flex justify-center align-center">
+  <div class="daily-problems d-flex justify-center align-center pa-8">
     <chapter-selection
       v-if="mode === 'select-chapter'"
-      class="select-chapter"
-      style="flex-grow: 1"
+      class="select-chapter flex-grow-1"
       :chapter-list="chapterList"
       @selected="handleChapterSelected"
     ></chapter-selection>
@@ -122,7 +121,8 @@ export default {
       this.mode = "show-answer";
     },
     loadAnswer() {
-      this.$state.commit("loading");
+      this.$store.commit("loading");
+
       return this.loadingResolver();
     },
     async handleNextProblem() {
@@ -133,7 +133,7 @@ export default {
     loadingResolver(time = 500) {
       return new Promise((resolve) => {
         setTimeout(() => {
-          this.$state.commit("unLoading");
+          this.$store.commit("unLoading");
           resolve();
         }, time);
       });

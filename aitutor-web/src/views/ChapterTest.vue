@@ -140,7 +140,7 @@ export default {
       );
 
       const figurePromiseList = chapterProblems.map((data) => {
-        return this.$store.dispatch("loadProblemFigure", data["파일명"]);
+        return this.$store.dispatch("loadProblemFigureUrl", data["파일명"]);
       });
 
       const figureUrlList = (await Promise.allSettled(figurePromiseList)).map(
