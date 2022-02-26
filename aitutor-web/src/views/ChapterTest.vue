@@ -98,7 +98,7 @@ export default {
   components: { ChapterSelection, Problem, ProblemResult },
   data() {
     return {
-      chapterList: chapterLists["중등 3-2"],
+      chapterList: [],
       mode: "select-chapter",
       nSolved: 0,
       nProblems: 3,
@@ -113,6 +113,13 @@ export default {
     totalScore() {
       return this.results.reduce((acc, cur) => acc + cur, 0);
     },
+  },
+  async mounted() {
+    this.$store.commit("loading");
+
+    this.chapterList = await this.$store.dispatch("loadSmallChapterList");
+
+    this.$store.commit("unLoading");
   },
   methods: {
     aggregateProblemAndFigure,

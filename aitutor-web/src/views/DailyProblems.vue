@@ -43,14 +43,20 @@ export default {
     return {
       problems,
       mode: "select-chapter",
-      chapterList: ["대단원1", "대단원2", "대단원3"],
-      nSolved: 0,
-      nProblems: 3,
+      chapter: "",
+      chapterList: [],
       currentProblem: {},
       choices: [],
     };
   },
   computed: {},
+  async mounted() {
+    this.$store.commit("loading");
+
+    this.chapterList = await this.$store.dispatch("loadMiddleChapterList");
+
+    this.$store.commit("unLoading");
+  },
   methods: {
     async handleChapterSelected(e) {
       console.log(`selection recieved: ${e}`);

@@ -102,10 +102,20 @@ export default new Vuex.Store({
       commit("setUserProfile", {});
     },
 
-    async loadChapterTestProblems(_, chapter) {
+    async loadSmallChapterList({ state }) {
+      const smallChapterListRef = doc(smallChapterListsCollection, state.userProfile.semester);
+      const smallChapterList = await getDoc(smallChapterListRef);
+      return smallChapterList.data().smallChapterList;
+    },
+    async loadMiddleChapterList({ state }) {
+      const middleChapterListRef = doc(middleChapterListsCollection, state.userProfile.semester);
+      const middleChapterList = await getDoc(middleChapterListRef);
+      return middleChapterList.data().middleChapterList;
+    },
+    async loadChapterTestProblems({ state }, chapter) {
       const problemsQuery = query(
         problemsCollection,
-        where("학년", "==", "중등 3-2"),
+        where("학년", "==", state.userProfile.semester),
         where("소단원", "==", chapter),
         orderBy("confidence_rate", "desc"),
         limit(15)
